@@ -707,7 +707,7 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   cloudProjectId: aed24981-86fd-4764-91d1-a7774dd21456
   framebufferDepthMemorylessMode: 0
-  projectName: Space Shooter Learn
+  projectName: Space Shooter
   organizationId: kevin0912wang
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0

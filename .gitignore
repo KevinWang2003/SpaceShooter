@@ -26,6 +26,10 @@
 # Visual Studio cache directory
 .vs/
 
+# Plastic Repository
+.plastic
+ignore.conf
+
 # Gradle cache directory
 .gradle/
 

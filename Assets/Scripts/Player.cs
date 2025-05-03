@@ -1,10 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     [SerializeField]
     private float _speed = 3.5f;
     private float _speedMultiplier = 2;
@@ -17,7 +15,6 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
-    private SpawnManager _spawnManager;
     [SerializeField]
     private bool _isTripleShotActive = false;
     [SerializeField]
@@ -31,31 +28,25 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private int _score;
+    [SerializeField]
+    private int _highScore;
 
     private UIManager _uiManager;
+    private GameManager _gameManager;
+    private SpawnManager _spawnManager;
 
     [SerializeField]
     private AudioClip _laserSoundClip;
-
     private AudioSource _audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0, 0, 0);
-        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
-        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        InitManagers();
+
         _audioSource = GetComponent<AudioSource>();
 
-        if (_spawnManager == null)
-        {
-            Debug.LogError("The Spawn Manager is null.");
-        }
-
-        if (_uiManager == null)
-        {
-            Debug.LogError("The UI Manager is null.");
-        }
+        transform.position = new Vector3(0, 0, 0);
 
         if (_audioSource == null)
         {
@@ -74,6 +65,27 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
             ShootLaser();
+    }
+
+    private void InitManagers()
+    {
+        //_gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        //if (_gameManager == null)
+        //{
+        //    Debug.LogError("The Game Manager is null.");
+        //}
+
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+        {
+            Debug.LogError("The Spawn Manager is null.");
+        }
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if (_uiManager == null)
+        {
+            Debug.LogError("The UI Manager is null.");
+        }
     }
 
     public void CalculateMovement()
@@ -116,6 +128,7 @@ public class Player : MonoBehaviour
         if (_lives < 1)
         {
             _spawnManager.OnPlayerDeath();
+            _uiManager.CheckForHighScore(_score);
             Destroy(this.gameObject);
         }
     }
@@ -170,4 +183,5 @@ public class Player : MonoBehaviour
         _score += points;
         _uiManager.UpdateScore(_score);
     }
+
 }
